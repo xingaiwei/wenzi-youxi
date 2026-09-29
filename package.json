@@ -1,0 +1,21 @@
+{
+  "name": "wenzi-youxi",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "问道·水墨修仙文字冒险",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "validate": "vitest run tests/story.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}

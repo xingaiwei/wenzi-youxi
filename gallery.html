@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>插图画廊 · 开发用</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+    <style>
+      body { margin: 0; padding: 16px; background: #2b2926; color: #e9e0cb; font-family: serif; }
+      h1 { font-weight: normal; margin: 0 0 12px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+      figure { margin: 0; }
+      figure svg, figure img { width: 100%; height: auto; aspect-ratio: 16/10; display: block; object-fit: cover; }
+      figcaption { font: 13px monospace; padding: 4px 0; color: #bdb4a0; }
+    </style>
+  </head>
+  <body>
+    <h1>插图画廊</h1>
+    <div class="grid" id="grid"></div>
+    <script type="module">
+      import { ART_IDS, installInkDefs, renderArt } from '/src/art/registry.ts';
+      installInkDefs();
+      const grid = document.getElementById('grid');
+      for (const id of ART_IDS) {
+        const fig = document.createElement('figure');
+        fig.innerHTML = renderArt(id) + `<figcaption>${id}</figcaption>`;
+        grid.append(fig);
+      }
+    </script>
+  </body>
+</html>
