@@ -26,3 +26,21 @@ export function h<K extends keyof HTMLElementTagNameMap>(tag: K, props: Props = 
 export function clear(el: Element): void {
   while (el.firstChild) el.firstChild.remove();
 }
+
+/**
+ * 两步确认：第一次点击把按钮文字换成提示，3 秒内再点一次才执行。
+ * （不用 confirm()：嵌入式环境中原生对话框可能被屏蔽）
+ */
+export function confirmTwice(button: HTMLButtonElement, prompt: string, action: () => void): void {
+  if (button.dataset.armed === '1') {
+    action();
+    return;
+  }
+  const original = button.textContent;
+  button.dataset.armed = '1';
+  button.textContent = prompt;
+  setTimeout(() => {
+    button.dataset.armed = '';
+    button.textContent = original;
+  }, 3000);
+}

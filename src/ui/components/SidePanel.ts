@@ -1,5 +1,5 @@
 import type { Game } from '@/engine';
-import { h } from '../dom';
+import { confirmTwice, h } from '../dom';
 import { toast } from './Toast';
 
 type Tab = 'bag' | 'journal' | 'menu';
@@ -103,9 +103,7 @@ export class SidePanel {
           type: 'button',
           class: 'btn btn-danger',
           on: {
-            click: () => {
-              if (confirm('确定要放弃当前进度，重入轮回吗？')) this.actions.onRestart();
-            },
+            click: (e) => confirmTwice(e.currentTarget as HTMLButtonElement, '再点一次：放弃进度', this.actions.onRestart),
           },
         },
         '重新开始',

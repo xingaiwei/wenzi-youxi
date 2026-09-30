@@ -1,5 +1,5 @@
 import { renderArt } from '@/art/registry';
-import { h } from '../dom';
+import { confirmTwice, h } from '../dom';
 
 interface Options {
   hasSave: boolean;
@@ -45,11 +45,14 @@ export class TitleScreen {
           class: `btn ${opts.hasSave ? '' : 'btn-primary'}`,
           type: 'button',
           on: {
-            click: () => {
-              if (opts.hasSave && !confirm('开始新的旅程将覆盖现有存档，确定吗？')) return;
-              menu.classList.add('is-hidden');
-              form.classList.remove('is-hidden');
-              nameInput.focus();
+            click: (e) => {
+              const start = () => {
+                menu.classList.add('is-hidden');
+                form.classList.remove('is-hidden');
+                nameInput.focus();
+              };
+              if (opts.hasSave) confirmTwice(e.currentTarget as HTMLButtonElement, '再点一次：覆盖存档', start);
+              else start();
             },
           },
         },

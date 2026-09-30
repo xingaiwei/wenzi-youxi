@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "validate": "vitest run tests/story.test.ts"
+    "validate": "vitest run tests/story.test.ts",
+    "build:single": "npm run build && node scripts/build-single.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.3",

@@ -23,11 +23,22 @@
 
   --radius: 4px;
   --gutter: clamp(16px, 3vw, 32px);
+  --title-art-filter: none;
+  --title-ink: #141414;
+  --title-sub-ink: #3a3833;
+  --title-foot-ink: #5a574f;
+  --title-halo: rgba(239, 230, 210, 0.9);
+  --frame-mat: #d8c9a6;
+  --frame-line: rgba(90, 70, 40, 0.35);
+  --art-bg: #efe6d2;
+  --art-opacity: 1;
+  --scrim: rgba(20, 18, 14, 0.35);
   color-scheme: light;
 }
 
+/* 深色：跟随系统，或由外部 data-theme 强制 */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --paper: #1c1b18;
     --paper-deep: #26241f;
     --paper-edge: #3a362d;
@@ -39,8 +50,42 @@
     --wash: rgba(233, 224, 203, 0.05);
     --wash-strong: rgba(233, 224, 203, 0.1);
     --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --title-art-filter: brightness(0.62) contrast(1.05);
+    --title-ink: #f1e8d4;
+    --title-sub-ink: #d9cfb8;
+    --title-foot-ink: #b3aa96;
+    --title-halo: rgba(0, 0, 0, 0.8);
+    --frame-mat: #3a352b;
+    --frame-line: rgba(0, 0, 0, 0.5);
+    --art-bg: #1c1b18;
+    --art-opacity: 0.92;
+    --scrim: rgba(0, 0, 0, 0.55);
     color-scheme: dark;
   }
+}
+:root[data-theme='dark'] {
+  --paper: #1c1b18;
+  --paper-deep: #26241f;
+  --paper-edge: #3a362d;
+  --ink: #e9e0cb;
+  --ink-soft: #bdb4a0;
+  --ink-faint: #827b6c;
+  --cinnabar: #d0594a;
+  --cinnabar-soft: rgba(208, 89, 74, 0.16);
+  --wash: rgba(233, 224, 203, 0.05);
+  --wash-strong: rgba(233, 224, 203, 0.1);
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --title-art-filter: brightness(0.62) contrast(1.05);
+  --title-ink: #f1e8d4;
+  --title-sub-ink: #d9cfb8;
+  --title-foot-ink: #b3aa96;
+  --title-halo: rgba(0, 0, 0, 0.8);
+  --frame-mat: #3a352b;
+  --frame-line: rgba(0, 0, 0, 0.5);
+  --art-bg: #1c1b18;
+  --art-opacity: 0.92;
+  --scrim: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
 }
 
 *,
@@ -65,7 +110,7 @@ body {
 }
 
 #app {
-  min-height: 100%;
+  height: 100%;
 }
 
 button {
@@ -145,8 +190,7 @@ button {
 
 .title-screen {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100%;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -154,6 +198,7 @@ button {
 .title-art {
   position: absolute;
   inset: 0;
+  filter: var(--title-art-filter);
 }
 .title-art svg,
 .title-art .art-image {
@@ -161,11 +206,6 @@ button {
   width: 100%;
   height: 100%;
   display: block;
-}
-@media (prefers-color-scheme: dark) {
-  .title-art {
-    filter: brightness(0.62) contrast(1.05);
-  }
 }
 .title-content {
   position: relative;
@@ -183,25 +223,15 @@ button {
   font-size: clamp(5rem, 16vw, 9rem);
   line-height: 1;
   letter-spacing: 0.1em;
-  color: #141414;
-  text-shadow: 0 0 30px rgba(239, 230, 210, 0.9);
+  color: var(--title-ink);
+  text-shadow: 0 0 30px var(--title-halo);
 }
 .title-sub {
   margin: 0 0 1.6rem;
   font-size: 1.05rem;
   letter-spacing: 0.5em;
-  color: #3a3833;
-  text-shadow: 0 0 12px rgba(239, 230, 210, 0.95);
-}
-@media (prefers-color-scheme: dark) {
-  .title-logo {
-    color: #f1e8d4;
-    text-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-  }
-  .title-sub {
-    color: #d9cfb8;
-    text-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
-  }
+  color: var(--title-sub-ink);
+  text-shadow: 0 0 12px var(--title-halo);
 }
 .title-menu,
 .name-form {
@@ -245,13 +275,8 @@ button {
   right: 0;
   text-align: center;
   font-size: 0.8rem;
-  color: #5a574f;
+  color: var(--title-foot-ink);
   letter-spacing: 0.1em;
-}
-@media (prefers-color-scheme: dark) {
-  .title-foot {
-    color: #b3aa96;
-  }
 }
 
 /* ---- 游戏画面 ------------------------------------------------------------ */
@@ -259,8 +284,7 @@ button {
 .game-screen {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
+  height: 100%;
 }
 
 .status-bar {
@@ -386,7 +410,7 @@ button {
     transform 6s ease-out;
 }
 .art-layer.is-visible {
-  opacity: 1;
+  opacity: var(--art-opacity);
   transform: scale(1);
 }
 .art-layer svg,
@@ -398,20 +422,9 @@ button {
   max-height: 100%;
   aspect-ratio: 16 / 10;
   box-shadow:
-    0 0 0 6px #d8c9a6,
-    0 0 0 7px rgba(90, 70, 40, 0.35),
+    0 0 0 6px var(--frame-mat),
+    0 0 0 7px var(--frame-line),
     var(--shadow);
-}
-@media (prefers-color-scheme: dark) {
-  .art-layer svg {
-    box-shadow:
-      0 0 0 6px #3a352b,
-      0 0 0 7px rgba(0, 0, 0, 0.5),
-      var(--shadow);
-  }
-  .art-layer.is-visible {
-    opacity: 0.92;
-  }
 }
 
 /* 正文 */
@@ -609,7 +622,7 @@ button {
   transition: background 0.3s;
 }
 .side-panel.is-open {
-  background: rgba(20, 18, 14, 0.35);
+  background: var(--scrim);
   pointer-events: auto;
 }
 .panel-sheet {
@@ -746,7 +759,7 @@ button {
   }
   .game-screen {
     height: auto;
-    min-height: 100dvh;
+    min-height: 100%;
   }
   .stage {
     display: block;
